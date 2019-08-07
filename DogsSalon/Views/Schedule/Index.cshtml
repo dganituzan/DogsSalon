@@ -1,0 +1,90 @@
+﻿@model IEnumerable<DogsSalon.Models.Order>
+  
+
+    @{
+        ViewData["Title"] = "Index";
+    }
+
+    <h1>Schedule</h1>
+    <br />
+    <input type="button" class="btn btn-primary" value="New Order" onclick="@("window.location.href='" + @Url.Action("New", "Schedule") + "'");" />
+    <br />
+    <br />
+    <br />
+    @if (!Model.Any())
+    {
+        <p>We have no orders yet!</p>
+    }
+    else
+    {
+
+@*  <nav aria-label="Schedule Paging">
+            @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model })
+        </nav>*@
+
+        <form asp-action="Index" method="get">
+            <div class="form-actions no-color">
+                <p>
+                    Find by day: <input type="text" name="DateString" value="@ViewData["DateFilter"]" />
+                    <input type="submit" value="Search" class="btn btn-secondary" />
+
+                    Find by name: <input type="text" name="SearchString" value="@ViewData["NameFilter"]" />
+                    <input type="submit" value="Search" class="btn btn-secondary" /> |
+                    <a asp-action="Index">Back to Full List</a>
+                </p>
+            </div>
+        </form>
+
+        @* @using (Html.BeginForm("ActionName", "ControllerName", FormMethod.Get))
+            {
+                @Html.TextBoxFor(m => m.)
+
+                <div>
+                    <input type="submit" value="Search" />
+                </div>
+            }*@
+
+
+        <table id="schedule" class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        Order
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model)
+                {
+                    <tr>
+                        <!--Html.ActionLink(customer.name, "Details", "Customers", new { id = customer.id }, null)</td>-->
+                        <td>
+                            <b> @order.customer.name</b> <br />
+                            Date:@String.Format("{0: dd/MM/yyyy}", order.timeOfOrder)<br />
+                            At: @String.Format("{0: HH:mm}", order.timeOfOrder)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", "Schedule", new { id = order.id }, null)
+
+                        </td>
+                        <td>
+                            @using (Html.BeginForm("deleteOrder", "Schedule"))
+                            {
+                                <input class="btn btn-outline-danger" type="submit" value="Delete"
+                                       onclick="return confirm('are you sure');" />
+                                @Html.HiddenFor(m => order.id)
+                                @Html.HiddenFor(m => order.createDate)
+                            }
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+     @*   <nav aria-label="Schedule Paging">
+            <vc:pager paging-list="@Model" />
+        </nav>*@
+
+
+    }

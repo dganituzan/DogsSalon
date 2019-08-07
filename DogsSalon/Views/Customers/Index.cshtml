@@ -1,0 +1,39 @@
+﻿@model IEnumerable<DogsSalon.Models.Customer>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>CustimersList</h1>
+
+@if (!Model.Any())
+{
+    <p>We have no custumers yet!</p>
+}
+else
+{
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>
+                    Customer
+                </th>
+                <th>
+                    Discount Rate
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var customer in Model)
+            {
+                <tr>
+                    <td>@Html.ActionLink(customer.name, "Details", "Customers", new { id = customer.id }, null)</td>
+                  
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
+
